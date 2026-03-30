@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CareerGap AI</title>
+</head>
+
+<body>
+
+<h2>CareerGap AI</h2>
+
+<textarea id="resume" placeholder="Enter Resume"></textarea><br><br>
+<textarea id="job" placeholder="Enter Job"></textarea><br><br>
+
+<button onclick="analyze()">Analyze</button>
+
+<p id="result"></p>
+
+<script>
+async function analyze() {
+
+    let resume = document.getElementById("resume").value;
+    let job = document.getElementById("job").value;
+
+    let response = await fetch("http://192.168.1.17:5000/analyze", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            resume: resume,
+            job: job
+        })
+    });
+
+    let data = await response.json();
+
+    document.getElementById("result").innerHTML =
+        "Match Score: " + data.match_score + "<br>" +
+        "Confidence Score: " + data.confidence_score + "<br>" +
+        "Recommendation: " + data.recommendation;
+}
+</script>
+
+</body>
+</html>
